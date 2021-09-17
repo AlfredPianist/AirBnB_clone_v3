@@ -18,6 +18,7 @@ import json
 import os
 import pep8
 import unittest
+import random
 FileStorage = file_storage.FileStorage
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -124,7 +125,16 @@ class TestFileStorage(unittest.TestCase):
             instance_key = instance.__class__.__name__ + "." + instance.id
             new_dict[instance_key] = instance
         FileStorage._FileStorage__objects = new_dict
+        storage.save()
 
+        # Test correct get result with non existing object
+        self.assertIs(storage.get(None, None), None)
+
+        # Test correct get result with non existing id
+        rand = random.choice(list(classes.values()))
+        self.assertIs(storage.get(rand, None), None)
+
+        # Test correct get for each existing object type
         for obj in storage.all().values():
             obj_get = storage.get(type(obj), obj.id)
             self.assertEqual(obj_get, obj)
@@ -139,12 +149,15 @@ class TestFileStorage(unittest.TestCase):
             instance_key = instance.__class__.__name__ + "." + instance.id
             new_dict[instance_key] = instance
         FileStorage._FileStorage__objects = new_dict
+        storage.save()
 
+        # Test correct count for each existing object type
         for cls_name in classes.values():
             dict_count = len([obj for obj in
                               FileStorage._FileStorage__objects.values()
                               if obj.__class__ == cls_name])
             self.assertEqual(dict_count, storage.count(cls_name))
 
-        total_count = len(list(FileStorage._FileStorage__objects.values()))
+        # Test correct count for all objects
+        total_count = len(FileStorage._FileStorage__objects)
         self.assertEqual(total_count, storage.count())
