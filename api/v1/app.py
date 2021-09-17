@@ -17,10 +17,10 @@ def teardown_db(exception):
 
 
 if __name__ == "__main__":
-    HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST') if not None else '0.0.0.0'
-    HBNB_MYSQL_PORT = getenv('HBNB_MYSQL_PORT') if not None else '5000'
+    HBNB_API_HOST = getenv('HBNB_API_HOST') if not None else '0.0.0.0'
+    HBNB_API_PORT = getenv('HBNB_API_PORT') if not None else '5000'
 
-    app.run(host=HBNB_MYSQL_HOST,
-            port=HBNB_MYSQL_PORT,
+    app.run(host=HBNB_API_HOST,
+            port=HBNB_API_PORT,
             threaded=True,
             debug=True)
