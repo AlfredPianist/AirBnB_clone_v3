@@ -8,4 +8,4 @@ from flask import jsonify
 @app_views.route('/status', strict_slashes=False, methods=['GET'])
 def status():
     """Returns OK if endpoint was correctly created"""
-    return jsonify({'status': 'OK'})
+    return jsonify({'status': 'OK'}), 200
