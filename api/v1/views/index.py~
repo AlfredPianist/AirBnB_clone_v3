@@ -1,0 +1,10 @@
+#!/usr/bin/python3
+"""Documentation"""
+
+from api.v1.views import app_views
+
+
+@app_views.route('/status', strict_slashes=False)
+def status():
+    """display the states and cities listed in alphabetical order"""
+    return render_template('9-states.html', states=states, state_id=state_id)
