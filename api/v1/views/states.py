@@ -20,9 +20,9 @@ def get_all_states():
 def get_state_by_id(state_id):
     """Returns a state object based on its id. Error if not found"""
     state = storage.get(State, state_id)
-    if state:
-        return jsonify(state.to_dict()), 200
-    abort(404)
+    if not state:
+        abort(404)
+    return jsonify(state.to_dict()), 200
 
 
 @app_views.route('/states', strict_slashes=False,
@@ -46,15 +46,14 @@ def update_state(state_id):
     state_json = request.get_json(silent=True)
     if not state_json:
         return jsonify({'error': 'Not a JSON'}), 400
-
     state = storage.get(State, state_id)
     if state:
-        for key, val in state_json.items():
-            if key not in ['id', 'created_at', 'updated_at']:
-                setattr(state, key, val)
-        state.save()
-        return jsonify(state.to_dict()), 200
-    abort(404)
+        abort(404)
+    for key, val in state_json.items():
+        if key not in ['id', 'created_at', 'updated_at']:
+            setattr(state, key, val)
+    state.save()
+    return jsonify(state.to_dict()), 200
 
 
 @app_views.route('/states/<state_id>', strict_slashes=False,
@@ -62,8 +61,8 @@ def update_state(state_id):
 def delete_state(state_id):
     """Deletes a state and returns an empty JSON"""
     state = storage.get(State, state_id)
-    if state:
-        storage.delete(state)
-        storage.save()
-        return jsonify({}), 200
-    abort(404)
+    if not state:
+        abort(404)
+    storage.delete(state)
+    storage.save()
+    return jsonify({}), 200
