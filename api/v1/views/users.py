@@ -32,9 +32,10 @@ def create_user():
     user_json = request.get_json(silent=True)
     if not user_json:
         return jsonify({'error': 'Not a JSON'}), 400
-    for key in ['email', 'password']:
-        if key not in user_json:
-            return jsonify({'error': 'Missing {}'.format(key)}), 400
+    if 'email' not in user_json:
+        return jsonify({'error': 'Missing email'}), 400
+    if 'password' not in user_json:
+        return jsonify({'error': 'Missing password'}), 400
     user = User(**user_json)
     user.save()
     return jsonify(user.to_dict()), 201
