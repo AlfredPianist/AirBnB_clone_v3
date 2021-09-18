@@ -145,4 +145,7 @@ cython_debug/
 # Temp EMACS files
 *~
 
+# VSCode specific configs
+.vscode
+
 # End of https://www.toptal.com/developers/gitignore/api/python
