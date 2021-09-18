@@ -29,12 +29,12 @@ def get_amenity_by_id(amenity_id):
                  methods=['POST'])
 def create_amenity():
     """Stores and returns a new amenity"""
-    amenities_json = request.get_json(silent=True)
-    if not amenities_json:
+    amenity_json = request.get_json(silent=True)
+    if not amenity_json:
         return jsonify({'error': 'Not a JSON'}), 400
-    if 'name' not in amenities_json:
+    if 'name' not in amenity_json:
         return jsonify({'error': 'Missing name'}), 400
-    amenity = Amenity(**amenities_json)
+    amenity = Amenity(**amenity_json)
     amenity.save()
     return jsonify(amenity.to_dict()), 201
 
