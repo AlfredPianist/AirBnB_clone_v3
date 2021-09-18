@@ -47,7 +47,7 @@ def update_state(state_id):
     if not state_json:
         return jsonify({'error': 'Not a JSON'}), 400
     state = storage.get(State, state_id)
-    if state:
+    if not state:
         abort(404)
     for key, val in state_json.items():
         if key not in ['id', 'created_at', 'updated_at']:
