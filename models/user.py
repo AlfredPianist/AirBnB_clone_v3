@@ -24,6 +24,14 @@ class User(BaseModel, Base):
         first_name = ""
         last_name = ""
 
+    def __setattr__(self, name, value):
+        """hash password"""
+        from hashlib import md5
+        if name == "password":
+            hash_pass = md5(value.encode('utf-8'))
+            value = hash_pass.hexdigest()
+        self.__dict__[name] = value
+
     def __init__(self, *args, **kwargs):
         """initializes user"""
         super().__init__(*args, **kwargs)
