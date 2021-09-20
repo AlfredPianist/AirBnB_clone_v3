@@ -8,8 +8,7 @@ from models.amenity import Amenity
 import models
 
 
-@app_views.route('/places/<place_id>/amenities', strict_slashes=False,
-                 methods=['GET'])
+@app_views.route('/places/<place_id>/amenities', methods=['GET'])
 def get_all_amenities_from_place(place_id):
     """Returns all amenity objects related to a place object"""
     place = models.storage.get(Place, place_id)
@@ -25,8 +24,7 @@ def get_all_amenities_from_place(place_id):
     return jsonify([amenity.to_dict() for amenity in amenities]), 200
 
 
-@app_views.route('/places/<place_id>/amenities/<amenity_id>',
-                 strict_slashes=False, methods=['POST'])
+@app_views.route('/places/<place_id>/amenities/<amenity_id>', methods=['POST'])
 def create_link_place_amenity(place_id, amenity_id):
     """Stores a link between a an amenity and a place"""
     place = models.storage.get(Place, place_id)
@@ -48,7 +46,7 @@ def create_link_place_amenity(place_id, amenity_id):
 
 
 @app_views.route('/places/<place_id>/amenities/<amenity_id>',
-                 strict_slashes=False, methods=['DELETE'])
+                 methods=['DELETE'])
 def delete_link_place_amenity(place_id, amenity_id):
     """Deletes a link between a place and an amenity and
     returns an empty JSON"""
