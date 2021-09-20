@@ -70,7 +70,7 @@ class BaseModel:
             del new_dict["_sa_instance_state"]
         if "password" in new_dict and models.storage_t == "db":
             del new_dict["password"]
-        if "amenities" in new_dict and models.storage_t == "db":
+        if self.__class__.name == "Place" and "amenities" in new_dict:
             del new_dict["amenities"]
         return new_dict
 
