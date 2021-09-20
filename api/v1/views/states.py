@@ -233,7 +233,7 @@ def update_state(state_id):
               default: "Not found"
               example: "Not found"
       200:
-        description: User updated
+        description: State updated
         schema:
           type: object
           properties:

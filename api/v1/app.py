@@ -3,7 +3,7 @@
 
 from flask import Flask, make_response, jsonify
 from flask_cors import CORS
-# from flasgger import Swagger
+from flasgger import Swagger
 from models import storage
 from api.v1.views import app_views
 from os import getenv
@@ -32,7 +32,7 @@ swagger_template = {
 
 app.register_blueprint(app_views)
 CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
-# swagger = Swagger(app, template=swagger_template)
+swagger = Swagger(app, template=swagger_template)
 
 
 @app.teardown_appcontext
