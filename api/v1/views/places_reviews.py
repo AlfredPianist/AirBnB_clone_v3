@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Reviews view for api v1"""
+"""Places-Reviews view for api v1"""
 
 from api.v1.views import app_views
 from flask import jsonify, abort, request
