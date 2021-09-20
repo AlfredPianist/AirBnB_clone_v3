@@ -80,3 +80,40 @@ def delete_place(place_id):
     storage.delete(place)
     storage.save()
     return jsonify({}), 200
+
+
+@app_views.route('/places_search', strict_slashes=False,
+                 methods=['POST'])
+def search_place():
+    from models.state import State
+    """Searches for places given some parameters"""
+    search_json = request.get_json(silent=True)
+    if search_json is None:
+        return jsonify({'error': 'Not a JSON'}), 400
+    places = storage.all(Place).values()
+
+    states_param = search_json.get("states")
+    cities_param = search_json.get("cities")
+    amenities_param = search_json.get("amenities")
+
+    places_search = []
+    if states_param:
+        for state_id in states_param:
+            state = storage.get(State, state_id)
+            places_search.extend(
+                [place for city in state.cities for place in city.places])
+    if cities_param:
+        for city_id in cities_param:
+            city = storage.get(City, city_id)
+            places_search.extend(
+                [place for place in city.places if place not in places_search])
+    places_search = places_search if places_search else places
+    if amenities_param:
+        place_amenity_filter = []
+        for place in places_search:
+            amenity_list = [amenity.id for amenity in place.amenities]
+            if all(amenity_id in amenity_list for amenity_id
+                    in amenities_param):
+                place_amenity_filter.append(place)
+        places_search = place_amenity_filter
+    return jsonify([place.to_dict() for place in places_search]), 200
