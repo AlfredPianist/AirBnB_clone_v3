@@ -32,7 +32,7 @@ class User(BaseModel, Base):
         if name == "password":
             hash_pass = md5(value.encode('utf-8'))
             value = hash_pass.hexdigest()
-        super().__setattr__(self, name, value)
+        self.__dict__[name] = value
 
     def __init__(self, *args, **kwargs):
         """initializes user"""
