@@ -30,8 +30,10 @@ def get_all_amenities_from_place(place_id):
 def create_link_place_amenity(place_id, amenity_id):
     """Stores a link between a an amenity and a place"""
     place = models.storage.get(Place, place_id)
+    if not place:
+        abort(404)
     amenity = models.storage.get(Amenity, amenity_id)
-    if not place and not amenity:
+    if not amenity:
         abort(404)
     if models.storage_t == "db":
         if amenity in place.amenities:
@@ -51,8 +53,10 @@ def delete_link_place_amenity(place_id, amenity_id):
     """Deletes a link between a place and an amenity and
     returns an empty JSON"""
     place = models.storage.get(Place, place_id)
+    if not place:
+        abort(404)
     amenity = models.storage.get(Amenity, amenity_id)
-    if not place and not amenity:
+    if not amenity:
         abort(404)
     if models.storage_t == "db":
         if amenity not in place.amenities:
