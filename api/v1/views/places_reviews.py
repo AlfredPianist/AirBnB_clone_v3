@@ -9,7 +9,8 @@ from models.user import User
 from models import storage
 
 
-@app_views.route('/places/<place_id>/reviews', methods=['GET'])
+@app_views.route('/places/<place_id>/reviews',
+                 strict_slashes=False, methods=['GET'])
 def get_all_reviews_from_place(place_id):
     """Returns all review objects related to a place object"""
     place = storage.get(Place, place_id)
@@ -19,7 +20,8 @@ def get_all_reviews_from_place(place_id):
     return jsonify([review.to_dict() for review in reviews]), 200
 
 
-@app_views.route('/reviews/<review_id>', methods=['GET'])
+@app_views.route('/reviews/<review_id>',
+                 strict_slashes=False, methods=['GET'])
 def get_review_by_id(review_id):
     """Returns a review object based on its id. Error if not found"""
     review = storage.get(Review, review_id)
@@ -28,7 +30,8 @@ def get_review_by_id(review_id):
     return jsonify(review.to_dict()), 200
 
 
-@app_views.route('/places/<place_id>/reviews', methods=['POST'])
+@app_views.route('/places/<place_id>/reviews',
+                 strict_slashes=False, methods=['POST'])
 def create_review(place_id):
     """Stores and returns a new review in a given place"""
     review_json = request.get_json(silent=True)
@@ -50,7 +53,8 @@ def create_review(place_id):
     return jsonify(review.to_dict()), 201
 
 
-@app_views.route('/reviews/<review_id>', methods=['PUT'])
+@app_views.route('/reviews/<review_id>',
+                 strict_slashes=False, methods=['PUT'])
 def update_review(review_id):
     """Updates and returns the information of a given review"""
     review_json = request.get_json(silent=True)
@@ -67,7 +71,8 @@ def update_review(review_id):
     return jsonify(review.to_dict()), 200
 
 
-@app_views.route('/reviews/<review_id>', methods=['DELETE'])
+@app_views.route('/reviews/<review_id>',
+                 strict_slashes=False, methods=['DELETE'])
 def delete_review(review_id):
     """Deletes a review and returns an empty JSON"""
     review = storage.get(Review, review_id)

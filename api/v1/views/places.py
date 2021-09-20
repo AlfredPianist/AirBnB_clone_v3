@@ -9,7 +9,8 @@ from models.user import User
 from models import storage
 
 
-@app_views.route('/cities/<city_id>/places', methods=['GET'])
+@app_views.route('/cities/<city_id>/places',
+                 strict_slashes=False, methods=['GET'])
 def get_all_places_from_city(city_id):
     """Returns all place objects related to a city object"""
     city = storage.get(City, city_id)
@@ -19,7 +20,8 @@ def get_all_places_from_city(city_id):
     return jsonify([place.to_dict() for place in places]), 200
 
 
-@app_views.route('/places/<place_id>', methods=['GET'])
+@app_views.route('/places/<place_id>',
+                 strict_slashes=False, methods=['GET'])
 def get_place_by_id(place_id):
     """Returns a place object based on its id. Error if not found"""
     place = storage.get(Place, place_id)
@@ -28,7 +30,8 @@ def get_place_by_id(place_id):
     return jsonify(place.to_dict()), 200
 
 
-@app_views.route('/cities/<city_id>/places', methods=['POST'])
+@app_views.route('/cities/<city_id>/places',
+                 strict_slashes=False, methods=['POST'])
 def create_place(city_id):
     """Stores and returns a new place in a given city"""
     place_json = request.get_json(silent=True)
@@ -50,7 +53,8 @@ def create_place(city_id):
     return jsonify(place.to_dict()), 201
 
 
-@app_views.route('/places/<place_id>', methods=['PUT'])
+@app_views.route('/places/<place_id>',
+                 strict_slashes=False, methods=['PUT'])
 def update_place(place_id):
     """Updates and returns the information of a given place"""
     place_json = request.get_json(silent=True)
@@ -66,7 +70,8 @@ def update_place(place_id):
     return jsonify(place.to_dict()), 200
 
 
-@app_views.route('/places/<place_id>', methods=['DELETE'])
+@app_views.route('/places/<place_id>',
+                 strict_slashes=False, methods=['DELETE'])
 def delete_place(place_id):
     """Deletes a place and returns an empty JSON"""
     place = storage.get(Place, place_id)
@@ -77,7 +82,8 @@ def delete_place(place_id):
     return jsonify({}), 200
 
 
-@app_views.route('/places_search', methods=['POST'])
+@app_views.route('/places_search',
+                 strict_slashes=False, methods=['POST'])
 def search_place():
     from models.state import State
     """Searches for places given some parameters"""

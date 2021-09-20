@@ -7,7 +7,8 @@ from models.user import User
 from models import storage
 
 
-@app_views.route('/users', methods=['GET'])
+@app_views.route('/users',
+                 strict_slashes=False, methods=['GET'])
 def get_all_users():
     """
     Get all users from database
@@ -69,7 +70,8 @@ def get_all_users():
     return jsonify([user.to_dict() for user in users]), 200
 
 
-@app_views.route('/users/<user_id>', methods=['GET'])
+@app_views.route('/users/<user_id>',
+                 strict_slashes=False, methods=['GET'])
 def get_user_by_id(user_id):
     """
     Get a user based on its ID
@@ -134,7 +136,8 @@ def get_user_by_id(user_id):
     return jsonify(user.to_dict()), 200
 
 
-@app_views.route('/users', methods=['POST'])
+@app_views.route('/users',
+                 strict_slashes=False, methods=['POST'])
 def create_user():
     """
     Create a new user
@@ -227,7 +230,8 @@ def create_user():
     return jsonify(user.to_dict()), 201
 
 
-@app_views.route('/users/<user_id>', methods=['PUT'])
+@app_views.route('/users/<user_id>',
+                 strict_slashes=False, methods=['PUT'])
 def update_user(user_id):
     """
     Update a user based on its ID
@@ -317,7 +321,8 @@ def update_user(user_id):
     return jsonify(user.to_dict()), 200
 
 
-@app_views.route('/users/<user_id>', methods=['DELETE'])
+@app_views.route('/users/<user_id>',
+                 strict_slashes=False, methods=['DELETE'])
 def delete_users(user_id):
     """
     Delete a user based on its ID

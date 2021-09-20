@@ -7,7 +7,8 @@ from models.state import State
 from models import storage
 
 
-@app_views.route('/states', methods=['GET'])
+@app_views.route('/states',
+                 strict_slashes=False, methods=['GET'])
 def get_all_states():
     """
     Get all states from database
@@ -59,7 +60,8 @@ def get_all_states():
     return jsonify([state.to_dict() for state in states]), 200
 
 
-@app_views.route('/states/<state_id>', methods=['GET'])
+@app_views.route('/states/<state_id>',
+                 strict_slashes=False, methods=['GET'])
 def get_state_by_id(state_id):
     """
     Get a state based on its ID
@@ -116,7 +118,8 @@ def get_state_by_id(state_id):
     return jsonify(state.to_dict()), 200
 
 
-@app_views.route('/states', methods=['POST'])
+@app_views.route('/states',
+                 strict_slashes=False, methods=['POST'])
 def create_state():
     """
     Create a new state
@@ -186,7 +189,8 @@ def create_state():
     return jsonify(state.to_dict()), 201
 
 
-@app_views.route('/states/<state_id>', methods=['PUT'])
+@app_views.route('/states/<state_id>',
+                 strict_slashes=False, methods=['PUT'])
 def update_state(state_id):
     """
     Update a state based on its ID
@@ -268,7 +272,8 @@ def update_state(state_id):
     return jsonify(state.to_dict()), 200
 
 
-@app_views.route('/states/<state_id>', methods=['DELETE'])
+@app_views.route('/states/<state_id>',
+                 strict_slashes=False, methods=['DELETE'])
 def delete_state(state_id):
     """
     Delete a state based on its ID

@@ -5,13 +5,15 @@ from api.v1.views import app_views
 from flask import jsonify
 
 
-@app_views.route('/status', methods=['GET'])
+@app_views.route('/status',
+                 strict_slashes=False, methods=['GET'])
 def status():
     """Returns OK if endpoint was correctly created"""
     return jsonify({'status': 'OK'}), 200
 
 
-@app_views.route('/stats', methods=['GET'])
+@app_views.route('/stats',
+                 strict_slashes=False, methods=['GET'])
 def stats():
     """Returns number of each object by type"""
     from models.amenity import Amenity
