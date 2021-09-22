@@ -335,7 +335,106 @@ def create_place(city_id):
 @app_views.route('/places/<place_id>',
                  strict_slashes=False, methods=['PUT'])
 def update_place(place_id):
-    """Updates and returns the information of a given place"""
+    """
+    Update a place based on its ID
+    ---
+    tags:
+      - Places
+    parameters:
+      - name: place_id
+        description: Place's id
+        in: path
+        type: string
+        required: true
+        example: 30e56424-c0f0-4e36-9523-f5e904bb3142
+      - name: update_body
+        description: Place's information to be updated
+        in: body
+        type: application/json
+        required: true
+        example:
+          {
+            "name": "Hello place"
+          }
+    responses:
+      400:
+        description: Invalid JSON
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+              default: "Not a JSON"
+              example: "Not a JSON"
+      404:
+        description: No place found
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+              default: "Not found"
+              example: "Not found"
+      200:
+        description: Place updated
+        schema:
+          type: object
+          properties:
+            __class__:
+              type: string
+              description: The object's class
+            city_id:
+              type: string
+              description: City's id
+            created_at:
+              type: string
+              description: Place creation date (YY-mm-ddTHH:mm.ffffff)
+            description:
+              type: string
+              description: Place's description
+            id:
+              type: string
+              description: Place's uuid4
+            latitude:
+              type: number
+              description: Place's latitude
+            longitude:
+              type: number
+              description: Place's longitude
+            max_guest:
+              type: number
+              description: Place's maximum number of guests allowed
+            name:
+              type: string
+              description: Place's name
+            number_bathrooms:
+              type: number
+              description: Place's number of bathrooms
+            number_rooms:
+              type: number
+              description: Place's number of rooms
+            updated_at:
+              type: string
+              description: Place update date (YY-mm-ddTHH:mm.ffffff)
+            user_id:
+              type: string
+              description: User's id
+          example:
+            __class__: "Place"
+            city_id: "d96b80e3-2c05-4fb6-922e-36643005a530"
+            created_at: "2017-03-25T02:17:06.000000"
+            description: "Completely renovated quality 31-foot Airstream [...]"
+            id: "30e56424-c0f0-4e36-9523-f5e904bb3142"
+            latitude: 38.3127
+            longitude: -122.294
+            max_guest: 2
+            name: "Hello place"
+            number_bathrooms: 1
+            number_rooms: 1
+            price_by_night: 130
+            updated_at: "2021-09-22T15:06:41.520104"
+            user_id: "61302be9-4b31-4be0-92fc-d0dda253e167"
+    """
     place_json = request.get_json(silent=True)
     if not place_json:
         return jsonify({'error': 'Not a JSON'}), 400
@@ -352,7 +451,34 @@ def update_place(place_id):
 @app_views.route('/places/<place_id>',
                  strict_slashes=False, methods=['DELETE'])
 def delete_place(place_id):
-    """Deletes a place and returns an empty JSON"""
+    """
+    Delete a place based on its ID
+    ---
+    tags:
+      - Places
+    parameters:
+      - name: place_id
+        description: Place's id
+        in: path
+        type: string
+        required: true
+        example: 38e38612-a626-47a9-a699-05efa178e155
+    responses:
+      404:
+        description: No place found
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+              default: "Not found"
+              example: "Not found"
+      200:
+        description: Place deleted
+        schema:
+          type: object
+          properties:
+    """
     place = storage.get(Place, place_id)
     if not place:
         abort(404)
@@ -364,8 +490,135 @@ def delete_place(place_id):
 @app_views.route('/places_search',
                  strict_slashes=False, methods=['POST'])
 def search_place():
+    """
+    Searches a place given some filters
+    ---
+    tags:
+      - Places
+    parameters:
+      - name: search_body
+        description: Place's search filters to be used
+        in: body
+        type: application/json
+        required: true
+        schema:
+          type: object
+          properties:
+            states:
+              type: array
+              description: List of State ids
+              items:
+                type: string
+                description: State id
+            cities:
+              type: array
+              description: List of City ids
+              items:
+                type: string
+                description: City id
+            amenities:
+              type: array
+              description: List of Amenity ids
+              items:
+                type: string
+                description: Amenity id
+          example:
+            states: ["9799648d-88dc-4e63-b858-32e6531bec5c"]
+            cities: ["05b0b99c-f10e-4e3a-88d1-b3187d6998ee"]
+            amenities: ["017ec502-e84a-4a0f-92d6-d97e27bb6bdf"]
+    responses:
+      400:
+        description: User error
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+              default: "Not a JSON"
+              example: "Not a JSON"
+      200:
+        description: All places filtered from parameters
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              __class__:
+                type: string
+                description: The object's class
+              city_id:
+                type: string
+                description: City's id
+              created_at:
+                type: string
+                description: Place creation date (YY-mm-ddTHH:mm.ffffff)
+              description:
+                type: string
+                description: Place's description
+              id:
+                type: string
+                description: Place's uuid4
+              latitude:
+                type: number
+                description: Place's latitude
+              longitude:
+                type: number
+                description: Place's longitude
+              max_guest:
+                type: number
+                description: Place's maximum number of guests allowed
+              name:
+                type: string
+                description: Place's name
+              number_bathrooms:
+                type: number
+                description: Place's number of bathrooms
+              number_rooms:
+                type: number
+                description: Place's number of rooms
+              updated_at:
+                type: string
+                description: Place update date (YY-mm-ddTHH:mm.ffffff)
+              user_id:
+                type: string
+                description: User's id
+          example:
+            [
+              {
+                "__class__": "Place",
+                "city_id": "6a1ea750-b16f-4814-ad7e-9f25e3843f53",
+                "created_at": "2017-03-25T02:17:06.000000",
+                "description": "Newly built cozy guest studio cottage [...]",
+                "id": "aaf389be-c794-4fb4-a6cf-619ca956898f",
+                "latitude": 38.3157,
+                "longitude": -122.489,
+                "max_guest": 2,
+                "name": "Cozy guest cottage in wine country!",
+                "number_bathrooms": 1,
+                "number_rooms": 0,
+                "price_by_night": 100,
+                "updated_at": "2017-03-25T02:17:06.000000",
+                "user_id": "150e591e-486b-48ee-be42-4aecba665020"
+              },
+              {
+                "__class__": "Place",
+                "city_id": "d96b80e3-2c05-4fb6-922e-36643005a530",
+                "created_at": "2017-03-25T02:17:06.000000",
+                "description": "Charming Bungalow attached guest suite [...]",
+                "id": "1ff1963c-7afa-470c-bc05-562b01549b09",
+                "latitude": 38.3131,
+                "longitude": -122.271,
+                "max_guest": 4,
+                "name": "Downtown Napa/Oxbow Area VR16-0054",
+                "number_bathrooms": 1,
+                "number_rooms": 1,
+                "price_by_night": 184,
+                "updated_at": "2017-03-25T02:17:06.000000",
+                "user_id": "b6160096-c503-4909-a674-7bfbddc8cc45"
+              },
+            ]
+    """
     from models.state import State
-    """Searches for places given some parameters"""
     search_json = request.get_json(silent=True)
     if search_json is None:
         return jsonify({'error': 'Not a JSON'}), 400
